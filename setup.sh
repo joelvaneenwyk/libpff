@@ -81,7 +81,7 @@ else
     ./synclibs.sh
     ./autogen.sh
     ./configure --disable-nls --disable-shared-libs
-    make sources >/dev/null
+    make sources
 fi
 
 if [ -e /usr/local/opt/gettext/bin ]; then
@@ -92,25 +92,23 @@ if [ -e /usr/local/bin/gsed ]; then
     export SED="/usr/local/bin/gsed"
 fi
 
-if [ "$BUILD_ENVIRONMENT" == "xcode" ]; then
-    tests/build.sh "$CONFIGURE_OPTIONS"
-fi
-
 if [ -n "${TOXENV:-}" ]; then
     uv run tox -e"$TOXENV"
 else
     uv run tox
 fi
 
+AUDITWHEEL_PLAT="${AUDITWHEEL_PLAT:-manylinux_2_35_x86_64}"
 uv run tox -eauditwheel -- --plat "$AUDITWHEEL_PLAT" dist/*.whl
 rm -f dist/*.whl
 mv wheelhouse/*.whl dist/
 
 if [ "$BUILD_ENVIRONMENT" == "cygwin64" ]; then
-    bash -e -l -c "cd libpff && wget -q 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' -O './config.guess' && wget -q 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD' -O './config.sub'"
-    bash -e -l -c "cd libpff && tests/build.sh $CONFIGURE_OPTIONS"
+    (
+        cd libpff
+        wget -q 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD' -O './config.guess'
+        wget -q 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD' -O './config.sub'
+    )
 fi
 
-if [ "$BUILD_ENVIRONMENT" == "mingw-w64" ]; then
-    bash -e -l -c "cd libpff && tests/build.sh $CONFIGURE_OPTIONS"
-fi
+tests/build.sh "$CONFIGURE_OPTIONS"
