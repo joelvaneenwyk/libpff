@@ -218,7 +218,6 @@ AC_CONFIG_FILES([dpkg/changelog])
 AC_CONFIG_FILES([libpff/libpff.rc])
 AC_CONFIG_FILES([libpff.pc])
 AC_CONFIG_FILES([libpff.spec])
-AC_CONFIG_FILES([setup.cfg])
 dnl Generate a source configuration file
 AC_CONFIG_HEADERS([common/config.h])
 
@@ -254,4 +253,3 @@ Features:
    Verbose output:                           $ac_cv_enable_verbose_output
    Debug output:                             $ac_cv_enable_debug_output
 ]);
-
