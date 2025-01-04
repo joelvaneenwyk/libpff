@@ -214,3 +214,8 @@ stamp-h[1-9]
 /zlib-*/
 
 /*.pyd
+
+/.venv/
+/.cspell/
+
+/.git/
