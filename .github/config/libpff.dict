@@ -17,6 +17,7 @@ buildroot
 cachetools
 CFLAGS
 chardet
+chly
 classnoinst
 cmdclass
 CMDCLASS
@@ -26,10 +27,12 @@ confdefs
 conftest
 CPPFLAGS
 cython
+defitions
 depcomp
 devel
 DHAVE
 dirstamp
+DISTCLEANFILES
 distlib
 distutils
 dokany
@@ -39,6 +42,8 @@ eauditwheel
 envlist
 exceptiongroup
 fcntl
+FDATETIME
+FGUID
 filelock
 fsanitize
 gcda
@@ -60,6 +65,7 @@ LASTEXITCODE
 lcmessage
 ldconfig
 LDFLAGS
+LIBADD
 libaries
 libasan
 LIBASAN
@@ -77,14 +83,19 @@ libfdata
 libfdatetime
 libfguid
 libfmapi
+libfplist
 libfuse
 LIBFUSE
 libfvalue
 libfwnt
+libodraw
 libpff
+libsmraw
 libtoolize
 LIBTOOLIZE
 libuna
+libyal
+LTLIBRARIES
 ltmain
 ltoptions
 ltsugar
@@ -106,7 +117,9 @@ msys
 MSYS
 mypy
 noconfirm
+noinst
 nonewline
+OLDIFS
 ossfuzz
 pacman
 passenv
