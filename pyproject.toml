@@ -1,12 +1,18 @@
 [project]
-name = "libpff"
-version = "2021.10.1"
-description = "Python bindings for libpff"
-requires-python = ">=3.10"
+name = "libpff-python"
+version = "20240826"
+description = "Python bindings module for libpff"
+readme = "Python bindings module for libpff"
+authors = [{name = "Joachim Metz", email = "joachim.metz@gmail.com"}]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python"
+]
+requires-python = ">=3.7"
 
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = []
+packages = ["pypff"]
