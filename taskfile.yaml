@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+# https://taskfile.dev
+
+version: "3"
+
+vars:
+  BUILD_DIR: .build
+  UV_RUN: msvc-dev-cmd -- uv run --no-sync
+
+tasks:
+  default:
+    cmds:
+      - task: build
+
+  env:
+    cmds:
+      - cmd: |
+          uv venv --allow-existing
+      - cmd: |
+          required_packages="setuptools cython pybind11 pyyaml ninja sccache tox tox-uv"
+          for package in $required_packages; do
+              if uv pip show "$package" > /dev/null 2>&1; then
+                  echo "$package is already installed"
+              else
+                  echo "$package is not installed. Installing..."
+                  uv pip install "$package"
+              fi
+          done
+
+  build:
+    deps: [env]
+    cmds:
+      - cmd: pwsh -File synczlib.ps1
+      - cmd: pwsh -File synclibs.ps1
+      - cmd: pwsh -File synctestdata.ps1
+      - cmd: pwsh -File autogen.ps1
+      - cmd: pwsh -File build.ps1 -Configuration Release -PythonPath ./.venv/Scripts/
