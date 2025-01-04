@@ -159,7 +159,7 @@ jobs:
           (cd ${DIRECTORY} && find . -maxdepth 1 -name \*.gcno -type f -exec gcov -pb {} \;) \
         done
     - name: Upload coverage report to Codecov
-      uses: codecov/codecov-action@v4
+      uses: codecov/codecov-action@v5
       with:
         name: linux-${{ matrix.architecture }}-gcc-no-optimization
         token: ${{ secrets.CODECOV_TOKEN }}
