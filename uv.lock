@@ -1,7 +1,7 @@
 version = 1
-requires-python = ">=3.10"
+requires-python = ">=3.7"
 
 [[package]]
-name = "libpff"
-version = "2021.10.1"
+name = "libpff-python"
+version = "20240826"
 source = { editable = "." }
