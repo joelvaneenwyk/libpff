@@ -8,7 +8,7 @@ classifiers = [
   "Development Status :: 3 - Alpha",
   "Programming Language :: Python"
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.9"
 
 [build-system]
 requires = ["setuptools", "wheel"]
@@ -16,3 +16,18 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
 packages = ["pypff"]
+
+[tool.uv]
+managed = true
+dev-dependencies = [
+    "mypy>=1.4.1",
+    "pylint>=2.13.9",
+    "pytest>=7.4.4",
+    "setuptools>=68.0.0",
+    "tox>=4.23.2",
+    "tox-uv>=1.17.0",
+    "wheel>=0.45.1",
+]
+
+[tool.uv.pip]
+universal = true
