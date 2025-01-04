@@ -219,3 +219,6 @@ stamp-h[1-9]
 /.cspell/
 
 /.git/
+
+/intl/VERSION
+/conf*/
