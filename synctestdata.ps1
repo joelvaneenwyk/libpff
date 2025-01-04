@@ -18,6 +18,10 @@ ForEach ($TestFile in ${TestFiles} -split " ")
 {
 	$Url = "https://github.com/log2timeline/plaso/blob/main/test_data/${TestFile}?raw=true"
 
-	Invoke-WebRequest -Uri ${Url} -OutFile "${TestInputDirectory}\${TestSet}\${TestFile}"
+    try {
+        Invoke-WebRequest -Uri ${Url} -OutFile "${TestInputDirectory}\${TestSet}\${TestFile}" -ErrorAction SilentlyContinue | Out-Null
+    }
+    catch {
+        Write-Output "Download failed: ${Url}"
+    }
 }
-
