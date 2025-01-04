@@ -5,7 +5,13 @@ version: "3"
 
 vars:
   BUILD_DIR: .build
-  UV_RUN: msvc-dev-cmd -- uv run --no-sync
+  PY_ACTIVATE: '{{ joinPath .TASKFILE_DIR ".venv/Scripts/activate" | toSlash }}'
+  UV_RUN: >-
+    {{.PY_ACTIVATE}} && msvc-dev-cmd -- uv run --no-sync
+  RUN: >-
+    {{.PY_ACTIVATE}} && msvc-dev-cmd --
+  RUN_SCRIPT: >-
+    {{.PY_ACTIVATE}} && msvc-dev-cmd -- pwsh -File
 
 tasks:
   default:
@@ -13,25 +19,38 @@ tasks:
       - task: build
 
   env:
+    silent: true
     cmds:
       - cmd: |
           uv venv --allow-existing
       - cmd: |
-          required_packages="setuptools cython pybind11 pyyaml ninja sccache tox tox-uv"
+          required_packages="build setuptools wheel setuptools cython pyyaml ninja tox tox-uv"
           for package in $required_packages; do
               if uv pip show "$package" > /dev/null 2>&1; then
                   echo "$package is already installed"
               else
                   echo "$package is not installed. Installing..."
-                  uv pip install "$package"
+                  uv pip install --link-mode=copy "$package"
               fi
           done
 
   build:
     deps: [env]
     cmds:
-      - cmd: pwsh -File synczlib.ps1
-      - cmd: pwsh -File synclibs.ps1
-      - cmd: pwsh -File synctestdata.ps1
-      - cmd: pwsh -File autogen.ps1
-      - cmd: pwsh -File build.ps1 -Configuration Release -PythonPath ./.venv/Scripts/
+      - cmd: |
+          {{.RUN_SCRIPT}} synczlib.ps1
+      - cmd: |
+          {{.RUN_SCRIPT}} synclibs.ps1
+      - cmd: |
+          {{.RUN_SCRIPT}} synctestdata.ps1
+      - cmd: |
+          {{.RUN_SCRIPT}} autogen.ps1
+      - cmd: |
+          {{.RUN_SCRIPT}} build.ps1 -Configuration VSDebug -PythonPath "{{ joinPath .TASKFILE_DIR ".venv/Scripts" | toSlash }}"
+      - cmd: |
+          {{.RUN_SCRIPT}} build.ps1 -Configuration Release -PythonPath "{{ joinPath .TASKFILE_DIR ".venv/Scripts" | toSlash }}"
+      - cmd: |
+          {{.UV_RUN}} python -m build --no-isolation --outdir=dist --wheel
+      - cmd: uv pip install --no-index --find-links=dist libpff-python
+      - cmd: |
+          {{.RUN_SCRIPT}} runtests.ps1
