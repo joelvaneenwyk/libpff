@@ -213,8 +213,6 @@ stamp-h[1-9]
 /vs2022/
 /zlib-*/
 
-/*.pyd
-
 /.venv/
 /.cspell/
 
@@ -222,3 +220,6 @@ stamp-h[1-9]
 
 /intl/VERSION
 /conf*/
+
+/*.pyd
+/*.zip
